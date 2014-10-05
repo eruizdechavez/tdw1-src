@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="img/favicon.ico">
+
+    <title>Angularify</title>
+
+    <link href="//<%= host %><%= basePath %>/css/styles.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav-bar></nav-bar>
+
+    <div class="container">
+      <ui-view></ui-view>
+    </div>
+
+    <script src="//<%= host %><%= basePath %>/js/dist/libs.js"></script>
+    <script src="//<%= host %><%= basePath %>/js/dist/index.js"></script>
+  </body>
+</html>

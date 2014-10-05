@@ -1,0 +1,8 @@
+# This is your basic config file.
+
+# You can use this file to set your default values and then override them using
+# environment specific files, like development.yml or production.yml.
+
+host: tdw.local
+port: 3000
+basePath: ''

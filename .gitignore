@@ -1,0 +1,6 @@
+node_modules
+.vagrant
+*id_rsa*
+src/web/public/css
+src/web/public/fonts
+src/web/public/js/dist

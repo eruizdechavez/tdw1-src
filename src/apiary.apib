@@ -1,0 +1,304 @@
+FORMAT: 1A
+HOST: http://api.example.co/
+
+# tdw1
+
+Una micro red social.
+
+- Todas las respuestas marcadas como error (4xx, 5xx) contendran un codigo de error en los encabezados `x-error-code` de tipo numerico y opcionalmente un mensaje de error `x-error-message`. El significado del codigo se explica en cada servicio de forma independiente.
+- Siempre que se indique, debera incluirse la cabezera de autenticacion, de lo contrario se regresara un estado `401 (Unauthorized)`.
+
+
+Group Usuarios
+==============
+
+Usuarios [/users]
+-----------------
+
+- Model (application/json)
+
+    - Headers
+
+            x-total-items: 2
+
+    - Body
+
+            [{
+                username: '',
+                picture: ''
+            }, {
+                username: '',
+                picture: ''
+            }]
+
+### Crear un Usuario [POST]
+
+Crea una cuenta de usuario nueva. Los campos `username`, `email` y `password` son requeridos. Si se intenta usar un `username` o un `email` que ya este en uso se regresa un `x-error-code` 2 o 3 respectivamente.
+
+- Request (application/json)
+
+        {
+            username: '',
+            email: '',
+            password: '',
+            name: ''
+        }
+
+- Response 201 (application/json)
+
+- Response 400
+
+    - Headers
+
+            x-error-code: 1
+            x-error-message: (lista de campos con error, separados por comas)
+
+- Response 409
+
+    - Headers
+
+            x-error-code: 2 (o 3)
+            x-error-message: usuario (o email) en uso
+
+
+Usuario [/users/{username}]
+---------------------------
+
+- Parameters
+
+    - username ... Nombre de usuario
+
+- Model (application/json)
+
+        {
+            username: '',
+            email: '',
+            name: ''
+            picture: '',
+            following: [],
+            followers: []
+        }
+
+
+### Obtener los detalles de un Usuario [GET]
+
+Regresa un objeto con los datos del usuario solicitado. En caso de no existir, se regresa un codigo `404`.
+
+- Response 200 (application/json)
+
+    [Usuario][]
+
+- Response 404
+
+
+### Actualizar los detalles de la cuenta de Usuario [PUT]
+
+Requiere autenticacion.
+
+Actualiza la cuenta del usuario. Todos los campos son opcionales. En caso de no contar con autorizacion (tratar de editar a otro usuario) se regresara un error `403`. Si se intenta usar un `username` o un `email` que ya este en uso se regresa un `x-error-code` 2 o 3 respectivamente.
+
+- Request (application/json)
+
+    - Headers
+
+            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+
+    - Body
+
+            {
+                username: '',
+                email: '',
+                password: '',
+                name: ''
+            }
+
+- Response 200 (application/json)
+
+- Response 403
+
+- Response 409
+
+    - Headers
+
+            x-error-code: 2 (o 3)
+            x-error-message: usuario (o email) en uso
+
+
+### Eliminar cuenta [DELETE]
+
+Requiere autenticacion.
+
+Elimina la cuenta del usuario. En caso de no contar con autorizacion (tratar de eliminar a otro usuario) se regresara un error `403`.
+
+- Request
+
+    - Headers
+
+            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+
+- Response 204
+
+- Response 403
+
+
+Seguidores [/users/{username}/followers]
+----------------------------------------
+
+- Parameters
+
+    - username ... Usuario del que se desea conocer los seguidores
+
+### Ver lista de Seguidores [GET]
+
+- Response 200 (application/json)
+
+    [Usuarios][]
+
+- Response 404
+
+Seguidos [/users/{username}/following]
+----------------------------------------
+
+- Parameters
+
+    - username ... Usuario del que se desea seguir o ver la lista de seguidos.
+
+### Ver lista de Seguidos [GET]
+
+- Response 200 (application/json)
+
+    [Usuarios][]
+
+- Response 404
+
+### Seguir a un Usuario [POST]
+
+Requiere autenticacion.
+
+Empieza a seguir al usuario cuyo `username` se provee en la URL.
+
+- Request
+
+    - Headers
+
+            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+
+- Response 201
+
+### Dejar de seguir a un Usuario [DELETE]
+
+Requiere autenticacion.
+
+Deja de seguir al usuario cuyo `username` se provee en la URL.
+
+- Request
+
+    - Headers
+
+            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+
+- Response 204
+
+
+Group Posts
+===========
+
+Posts [/posts]
+--------------
+
+- Model
+
+    - Headers
+
+            x-total-items: 2
+
+    - Body
+
+            [{
+                text: '',
+                user: {
+                    username: '',
+                    picture: ''
+                }
+            }, {
+                text: '',
+                user: {
+                    username: '',
+                    picture: ''
+                }
+            }]
+
+### Ver Posts propios y de los Usuarios Seguidos [GET]
+
+Requiere autenticacion.
+
+Regresa una coleccion de posts creados por el usuario y/o por los usuarios a los que este sigue.
+
+- Response 200 (application/json)
+
+    [Posts][]
+
+### Crear un Post [POST]
+
+Requiere autenticacion.
+
+Crea un post nuevo. El campo `text` es obligatorio. En caso de no ser valido (o no existir) se regresara un `x-error-code` 4.
+
+- Request (application/json)
+
+    - Headers
+
+            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+
+    - Body
+
+            {
+                text: ''
+            }
+
+- Response 201
+
+- Response 400
+
+    - Headers
+
+            x-error-code: 4
+
+
+Post [/posts/{id}]
+------------------
+
+- Model
+
+        {
+            text: '',
+            user: {
+                username: '',
+                picture: ''
+            }
+        }
+
+### Ver detalles de un Post [GET]
+
+Regresa un objeto con el contenido del post. En caso de no encontrarse, se regresara un error `404`.
+
+- Response 200 (application/json)
+
+    [Post][]
+
+
+### Borrar un Post [DELETE]
+
+Requiere autenticacion.
+
+Elimina un post. En caso de no contar con autorizacion (tratar de eliminar un post de otro usuario) se regresara un error `403`.
+
+- Request
+
+    - Headers
+
+            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+
+- Response 204
+
+- Response 403

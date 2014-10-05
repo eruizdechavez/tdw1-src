@@ -1,0 +1,183 @@
+---
+vagrantfile-local:
+    vm:
+        box: puphpet/ubuntu1404-x64
+        box_url: puphpet/ubuntu1404-x64
+        hostname: ''
+        memory: '512'
+        cpus: '1'
+        chosen_provider: virtualbox
+        network:
+            private_network: 192.168.56.103
+            forwarded_port: {  }
+        post_up_message: ''
+        provider:
+            virtualbox:
+                modifyvm:
+                    natdnshostresolver1: on
+            vmware:
+                numvcpus: 1
+            parallels:
+                cpus: 1
+        provision:
+            puppet:
+                manifests_path: puphpet/puppet
+                manifest_file: site.pp
+                module_path: puphpet/puppet/modules
+                options:
+                    - '--verbose'
+                    - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
+                    - '--parser future'
+        synced_folder:
+            api:
+                source: ./src/api
+                target: /home/vagrant/api
+                sync_type: default
+                rsync:
+                    args:
+                        - '--verbose'
+                        - '--archive'
+                        - '-z'
+                    exclude:
+                        - .vagrant/
+                    auto: 'false'
+            web:
+                source: ./src/web
+                target: /home/vagrant/web
+                sync_type: default
+                rsync:
+                    args:
+                        - '--verbose'
+                        - '--archive'
+                        - '-z'
+                    exclude:
+                        - .vagrant/
+                    auto: 'false'
+        usable_port_range:
+            start: 10200
+            stop: 10500
+    ssh:
+        host: null
+        port: null
+        private_key_path: null
+        username: vagrant
+        guest_port: null
+        keep_alive: true
+        forward_agent: false
+        forward_x11: false
+        shell: 'bash -l'
+    vagrant:
+        host: detect
+server:
+    install: '1'
+    packages:
+        - vim
+        - nano
+firewall:
+    install: '1'
+    rules:
+        web:
+            port: '3000'
+            priority: '100'
+            proto: tcp
+            action: accept
+        api:
+            port: '3001'
+            priority: '100'
+            proto: tcp
+            action: accept
+        redis:
+            port: '6379'
+            priority: '100'
+            proto: tcp
+            action: accept
+        mongodb:
+            port: '27017'
+            priority: '100'
+            proto: tcp
+            action: accept
+apache:
+    install: '1'
+    settings:
+        user: www-data
+        group: www-data
+        default_vhost: false
+        manage_user: false
+        manage_group: false
+        sendfile: 0
+    modules:
+        - rewrite
+    vhosts:
+        reverse_proxy:
+            servername: tdw1.local
+            docroot: /var/www
+            port: '80'
+            options:
+                - Indexes
+                - FollowSymLinks
+            engine: none
+            proxy_pass:
+                -
+                    path: /api/
+                    url: http://localhost:3001/
+                -
+                    path: /
+                    url: http://localhost:3000/
+    mod_pagespeed: 0
+nodejs:
+    install: '1'
+    npm_packages:
+        - forever
+        - bower
+        - grunt-cli
+        - grunt-init
+        - ngrok
+mongodb:
+    install: '1'
+    settings:
+        auth: 1
+        port: '27017'
+    databases: {  }
+redis:
+    install: '1'
+    settings:
+        conf_port: '6379'
+ruby:
+    install: '1'
+    versions:
+        pbLDBzWM0ewI:
+            version: ''
+python:
+    install: '1'
+    packages: {  }
+    versions:
+        9gaxSIdUnZWe:
+            version: ''
+nginx:
+    install: '0'
+php:
+    install: '0'
+hhvm:
+    install: '0'
+xdebug:
+    install: '0'
+xhprof:
+    install: '0'
+drush:
+    install: '0'
+mysql:
+    install: '0'
+postgresql:
+    install: '0'
+mariadb:
+    install: '0'
+sqlite:
+    install: '0'
+mailcatcher:
+    install: '0'
+beanstalkd:
+    install: '0'
+rabbitmq:
+    install: '0'
+elastic_search:
+    install: '0'
