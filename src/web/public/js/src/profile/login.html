@@ -1,0 +1,19 @@
+<form ng-submit="loginCtrl.login(loginCtrl.user)">
+  <div class="form-group">
+    <label for="username">Nombre de usuario</label>
+    <input id="username"
+           type="text"
+           class="form-control"
+           placeholder="Escribe aquí tu nombre de usuario"
+           ng-model="loginCtrl.user.username">
+  </div>
+  <div class="form-group">
+    <label for="password">Contraseña</label>
+    <input id="password"
+           type="password"
+           class="form-control"
+           placeholder="Escribe aquí tu contraseña"
+           ng-model="loginCtrl.user.password">
+  </div>
+  <button class="btn btn-default">Enviar</button>
+</form>

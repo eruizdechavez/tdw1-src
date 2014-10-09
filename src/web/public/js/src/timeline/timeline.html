@@ -1,0 +1,11 @@
+<div class="row" ng-repeat="post in tlCtrl.posts">
+  <div class="col-md-1">
+    <img ng-src="{{ tlCtrl.pictureUrl(post.email) }}" alt="">
+  </div>
+  <div class="col-md-11">
+    <a ui-sref="profile({username: post.username})">
+      <strong>{{ post.username }}</strong>
+    </a>
+    <span>{{ post.text }}</span>
+  </div>
+</div>

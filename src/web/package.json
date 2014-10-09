@@ -32,6 +32,7 @@
   "browserify-shim": {
     "angular": "global:angular",
     "lodash": "global:_",
-    "alertify": "global:alertify"
+    "alertify": "global:alertify",
+    "md5": "global:md5"
   }
 }
