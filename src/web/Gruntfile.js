@@ -78,6 +78,17 @@ module.exports = function (grunt) {
         dest: '<%= meta.fonts %>/'
       }
     },
+    jshint: {
+      options: {
+        jshintrc: true
+      },
+      gruntfile: {
+        src: 'Gruntfile.js'
+      },
+      browser: {
+        src: '<%= meta.jsSrc %>/**/*.js'
+      }
+    },
     less: {
       development: {
         options: {
@@ -121,6 +132,12 @@ module.exports = function (grunt) {
         options: {
           livereload: true
         }
+      },
+      jshint: {
+        files: ['<%= jshint.browser.src %>', '<%= meta.jsSrc %>/**/*.html'],
+        options: {
+          livereload: true
+        }
       }
     }
   });
@@ -131,6 +148,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
