@@ -1,12 +1,13 @@
 'use strict';
 
 var router = require('express').Router(),
-  pkg = require('../package.json');
+  pkg = require('../package.json'),
+  users = require('./users');
 
-module.exports = function (basePath) {
-  router.use(basePath, function (req, res) {
-    res.send(pkg.name + '  ' + pkg.version);
-  });
+router.use('/users', users);
 
-  return router;
-};
+router.get('/', function (req, res) {
+  res.send(pkg.name + '  ' + pkg.version);
+});
+
+module.exports = router;
