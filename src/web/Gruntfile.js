@@ -41,6 +41,7 @@ module.exports = function (grunt) {
           '<%= meta.jsDist %>/libs.js': [
             '<%= meta.bower %>/lodash/dist/lodash.js',
             '<%= meta.bower %>/angular/angular.js',
+            '<%= meta.bower %>/angular-mocks/angular-mocks.js',
             '<%= meta.bower %>/angular-bootstrap/ui-bootstrap-tpls.js',
             '<%= meta.bower %>/angular-ui-router/release/angular-ui-router.js',
             '<%= meta.bower %>/restangular/dist/restangular.js',

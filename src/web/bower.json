@@ -11,6 +11,10 @@
     "angular-ui-router": "0.2.11",
     "alertify.js": "0.3.11",
     "restangular": "1.4.0",
-    "blueimp-md5": "1.1.0"
+    "blueimp-md5": "1.1.0",
+    "angular-mocks": "~1.3.0"
+  },
+  "resolutions": {
+    "angular": "1.2.26"
   }
 }

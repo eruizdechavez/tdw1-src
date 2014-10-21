@@ -5,7 +5,8 @@
            type="text"
            class="form-control"
            placeholder="Escribe aquí tu nombre de usuario"
-           ng-model="registerCtrl.user.username">
+           ng-model="registerCtrl.user.username"
+           required="">
   </div>
   <div class="form-group">
     <label for="email">Correo electrónico</label>
@@ -13,7 +14,8 @@
            type="email"
            class="form-control"
            placeholder="Escribe aquí tu correo electrónico"
-           ng-model="registerCtrl.user.email">
+           ng-model="registerCtrl.user.email"
+           required="">
   </div>
   <div class="form-group">
     <label for="password">Contraseña</label>
@@ -21,7 +23,8 @@
            type="password"
            class="form-control"
            placeholder="Escribe aquí tu contraseña"
-           ng-model="registerCtrl.user.password">
+           ng-model="registerCtrl.user.password"
+           required="">
   </div>
   <div class="form-group">
     <label for="confirmPassword">Confirmar contraseña</label>
@@ -29,7 +32,8 @@
            type="password"
            class="form-control"
            placeholder="Confirma aquí tu contraseña"
-           ng-model="registerCtrl.user.confirmPassword">
+           ng-model="registerCtrl.user.confirmPassword"
+           required="">
   </div>
   <button class="btn btn-default">Enviar</button>
 </form>
