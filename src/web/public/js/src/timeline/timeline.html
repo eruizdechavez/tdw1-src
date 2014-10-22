@@ -1,4 +1,4 @@
-<div class="row" ng-repeat="post in tlCtrl.posts">
+<div class="row" ng-repeat="post in tlCtrl.posts track by post.superId">
   <div class="col-md-1">
     <img ng-src="{{ tlCtrl.pictureUrl(post.email) }}" alt="">
   </div>

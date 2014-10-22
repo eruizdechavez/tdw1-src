@@ -27,6 +27,10 @@ module.exports = ['$stateProvider', '$urlRouterProvider',
         controllerAs: 'tlCtrl',
         template: require('../timeline/timeline.html')
       })
+      .state('not-found', {
+        url: '/not-found',
+        template: require('../profile/not-found.html')
+      })
       .state('profile', {
         url: '/:username',
         controller: 'ProfileController',

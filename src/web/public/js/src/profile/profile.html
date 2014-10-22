@@ -1,9 +1,41 @@
-<div class="row">
-  <div class="col-md-2">
-    <img ng-src="{{ profileCtrl.pictureUrl(profileCtrl.user.email) }}">
+<form>
+  <div class="row">
+    <div class="col-md-2">
+      <img ng-src="{{ profileCtrl.pictureUrl(profileCtrl.user.email) }}">
+    </div>
+    <div class="col-md-10">
+      <div class="username">{{ profileCtrl.user.username }}</div>
+      <div class="email"
+           ng-if="!profileCtrl.isEdit">
+        {{ profileCtrl.user.email }}
+      </div>
+      <input type="email"
+             ng-model="profileCtrl.user.email"
+             ng-if="profileCtrl.isEdit">
+    </div>
   </div>
-  <div class="col-md-10">
-    <div class="username">{{ profileCtrl.user.username }}</div>
-    <div class="email">{{ profileCtrl.user.email }}</div>
+  <div class="row">
+    <div class="col-md-12">
+      <button ng-if="profileCtrl.isEdit"
+              class="btn btn-default pull-right"
+              ng-click="profileCtrl.update(profileCtrl.user)">
+        Save
+      </button>
+      <button ng-if="profileCtrl.isEdit"
+              class="btn btn-default pull-right"
+              ng-click="profileCtrl.isEdit = false">
+        Cancel
+      </button>
+      <button ng-if="!profileCtrl.isEdit"
+              class="btn btn-danger pull-right"
+              ng-click="profileCtrl.remove(profileCtrl.user.username)">
+        Delete Account
+      </button>
+      <button ng-if="!profileCtrl.isEdit"
+              class="btn btn-default pull-right"
+              ng-click="profileCtrl.isEdit = true">
+        Edit
+      </button>
+    </div>
   </div>
-</div>
+</form>

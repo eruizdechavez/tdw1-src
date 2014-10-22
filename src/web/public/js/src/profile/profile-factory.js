@@ -11,6 +11,21 @@ module.exports = ['$http',
         });
       },
 
+      update: function (user) {
+        return $http({
+          method: 'put',
+          url: '/api/users/' + user.username,
+          data: user
+        });
+      },
+
+      remove: function (username) {
+        return $http({
+          method: 'delete',
+          url: '/api/users/' + username
+        });
+      },
+
       loadUser: function(username) {
         return $http({
           url: '/api/users/' + username
