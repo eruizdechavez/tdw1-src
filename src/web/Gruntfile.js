@@ -41,10 +41,12 @@ module.exports = function (grunt) {
           '<%= meta.jsDist %>/libs.js': [
             '<%= meta.bower %>/lodash/dist/lodash.js',
             '<%= meta.bower %>/angular/angular.js',
+            '<%= meta.bower %>/angular-mocks/angular-mocks.js',
             '<%= meta.bower %>/angular-bootstrap/ui-bootstrap-tpls.js',
             '<%= meta.bower %>/angular-ui-router/release/angular-ui-router.js',
             '<%= meta.bower %>/restangular/dist/restangular.js',
-            '<%= meta.bower %>/alertify.js/lib/alertify.js'
+            '<%= meta.bower %>/alertify.js/lib/alertify.js',
+            '<%= meta.bower %>/blueimp-md5/js/md5.js'
           ]
         }
       },
@@ -56,7 +58,8 @@ module.exports = function (grunt) {
             '<%= meta.bower %>/angular-bootstrap/ui-bootstrap-tpls.min.js',
             '<%= meta.bower %>/angular-ui-router/release/angular-ui-router.min.js',
             '<%= meta.bower %>/restangular/dist/restangular.min.js',
-            '<%= meta.bower %>/alertify.js/lib/alertify.min.js'
+            '<%= meta.bower %>/alertify.js/lib/alertify.min.js',
+            '<%= meta.bower %>/blueimp-md5/js/md5.min.js'
           ]
         }
       }
