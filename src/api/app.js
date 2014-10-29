@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(router('/'));
+app.use('/', router);
 
 app.listen(config.port, function() {
   console.log('API server listening on port ' + config.port);
