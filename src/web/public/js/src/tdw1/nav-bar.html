@@ -11,8 +11,9 @@
     </div>
     <div collapse="isCollapsed" class="navbar-collapse" ng-click="collapse()">
       <ul class="nav navbar-nav navbar-right">
-        <li ui-sref-active="active"><a ui-sref="register">Register</a></li>
-        <li ui-sref-active="active"><a ui-sref="login">Login</a></li>
+        <li ui-sref-active="active"><a ui-sref="register" ng-hide="isLoggedIn()">Register</a></li>
+        <li ui-sref-active="active"><a ui-sref="login" ng-hide="isLoggedIn()">Login</a></li>
+        <li><a ng-if="isLoggedIn()" ng-click="logout()">Logout</a></li>
       </ul>
     </div>
   </div>

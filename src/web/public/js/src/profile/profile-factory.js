@@ -3,6 +3,23 @@
 module.exports = ['$http',
   function ($http) {
     return {
+
+      setUser: function (user) {
+        sessionStorage.setItem('tdw1:user', JSON.stringify(user));
+      },
+
+      getUser: function () {
+        var user = sessionStorage.getItem('tdw1:user');
+
+        if (user) {
+          user = JSON.parse(user);
+        } else {
+          user = {};
+        }
+
+        return user;
+      },
+
       register: function (user) {
         return $http({
           method: 'post',
@@ -11,32 +28,33 @@ module.exports = ['$http',
         });
       },
 
-      update: function (user) {
+      update: function (data, user) {
         return $http({
+          headers: {
+            Authorization: 'Basic ' + window.btoa(user.username + ':' + user.password)
+          },
           method: 'put',
           url: '/api/users/' + user.username,
-          data: user
+          data: data
         });
       },
 
-      remove: function (username) {
+      remove: function (user) {
         return $http({
+          headers: {
+            Authorization: 'Basic ' + window.btoa(user.username + ':' + user.password)
+          },
           method: 'delete',
-          url: '/api/users/' + username
+          url: '/api/users/' + user.username
         });
       },
 
-      loadUser: function(username) {
+      loadUser: function (username, user) {
         return $http({
+          headers: {
+            Authorization: 'Basic ' + window.btoa(user.username + ':' + user.password)
+          },
           url: '/api/users/' + username
-        });
-      },
-
-      login: function(user) {
-        return $http({
-          method: 'post',
-          url: '/login',
-          data: user
         });
       }
     };

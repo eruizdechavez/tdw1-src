@@ -14,7 +14,7 @@
              ng-if="profileCtrl.isEdit">
     </div>
   </div>
-  <div class="row">
+  <div class="row" ng-if="profileCtrl.canUpdate(profileCtrl.user.username)">
     <div class="col-md-12">
       <button ng-if="profileCtrl.isEdit"
               class="btn btn-default pull-right"

@@ -52,6 +52,11 @@ router.post('/', function (req, res) {
 router.get('/:username', auth, function (req, res) {
   UserModel.findByUsername(req.params.username, function (err, data) {
     if (err) {
+
+      if (err.code === 404) {
+        return res.status(404).end();
+      }
+
       return res.status(500).end();
     }
 
@@ -82,6 +87,18 @@ router.put('/:username', auth, function (req, res) {
     }
 
     return res.status(204).end();
+  });
+});
+
+router.delete('/:username', auth, function (req, res) {
+  if (req.params.username.toLowerCase() !== req.user.username) {
+    return res.status(403).end();
+  }
+
+  UserModel.remove(req.params.username.toLowerCase(), function() {
+    return res
+      .status(204)
+      .end();
   });
 });
 

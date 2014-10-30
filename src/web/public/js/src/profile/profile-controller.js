@@ -14,6 +14,12 @@ module.exports = ['$state', '$stateParams', 'ProfileFactory',
       ProfileFactory
         .register(user)
         .success(function () {
+
+          ProfileFactory.setUser({
+            username: user.username,
+            password: user.password
+          });
+
           $state.go('profile', {
             username: user.username
           });
@@ -44,9 +50,8 @@ module.exports = ['$state', '$stateParams', 'ProfileFactory',
 
     this.update = function (user) {
       ProfileFactory
-        .update(user)
+        .update(user, ProfileFactory.getUser())
         .success(function () {
-          console.log('success');
           this.isEdit = false;
         }.bind(this))
         .error(function (data, status, headers) {
@@ -76,8 +81,14 @@ module.exports = ['$state', '$stateParams', 'ProfileFactory',
 
     this.login = function (user) {
       ProfileFactory
-        .login(user)
+        .loadUser(user.username, user)
         .success(function () {
+
+          ProfileFactory.setUser({
+            username: user.username,
+            password: user.password
+          });
+
           $state.go('profile', {
             username: user.username
           });
@@ -95,7 +106,7 @@ module.exports = ['$state', '$stateParams', 'ProfileFactory',
 
     this.loadUser = function (username) {
       ProfileFactory
-        .loadUser(username)
+        .loadUser(username, ProfileFactory.getUser())
         .success(function (data) {
           this.user = data;
         }.bind(this))
@@ -108,15 +119,20 @@ module.exports = ['$state', '$stateParams', 'ProfileFactory',
       return '//www.gravatar.com/avatar/' + md5(email) + '?s=150';
     };
 
-    this.remove = function (username) {
+    this.remove = function () {
       ProfileFactory
-        .remove(username)
+        .remove(ProfileFactory.getUser())
         .success(function () {
+          ProfileFactory.setUser({});
           $state.go('home');
         })
         .error(function () {
           console.log('remove error');
         });
+    };
+
+    this.canUpdate = function(username) {
+      return username === ProfileFactory.getUser().username;
     };
 
     if ($stateParams.username) {

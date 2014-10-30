@@ -48,25 +48,36 @@ schema.statics.checkCredentials = function (user, callback) {
     return callback(err);
   }
 
-  redis.get('user:password:' + user.name, function (err, pass) {
-    if (err) {
-      return callback(err);
-    }
+  var multi = redis.multi();
 
-    if (!pass) {
-      err = new Error('Not found');
-      err.code = 401;
-      return callback(err);
-    }
+  multi
+    .sismember('users:deleted', user.name)
+    .get('user:password:' + user.name)
+    .exec(function (err, data) {
+      if (data[0]) {
+        err = new Error('Not found');
+        err.code = 404;
+        return callback(err);
+      }
 
-    if (pass !== model.hash(user.pass)) {
-      err = new Error('Wrong password');
-      err.code = 401;
-      return callback(err);
-    }
+      if (err) {
+        return callback(err);
+      }
 
-    return model.findByUsername(user.name, callback);
-  });
+      if (!data[1]) {
+        err = new Error('Not found');
+        err.code = 404;
+        return callback(err);
+      }
+
+      if (data[1] !== model.hash(user.pass)) {
+        err = new Error('Wrong password');
+        err.code = 401;
+        return callback(err);
+      }
+
+      return model.findByUsername(user.name, callback);
+    });
 };
 
 schema.statics.register = function (data, callback) {
@@ -86,12 +97,20 @@ schema.statics.register = function (data, callback) {
 };
 
 schema.statics.findByUsername = function (username, callback) {
-  this
-    .findOne({
-      username: username
-    })
-    .select('username email -_id')
-    .exec(callback);
+  redis.sismember('users:deleted', username, function (err, deleted) {
+    if (deleted) {
+      err = new Error('Not found');
+      err.code = 404;
+      return callback(err);
+    }
+
+    this
+      .findOne({
+        username: username
+      })
+      .select('username email -_id')
+      .exec(callback);
+  }.bind(this));
 };
 
 schema.statics.update = function (username, data, callback) {
@@ -105,6 +124,10 @@ schema.statics.update = function (username, data, callback) {
 
     user.save(callback);
   }));
+};
+
+schema.statics.remove = function (username, callback) {
+  redis.sadd('users:deleted', username, callback);
 };
 
 module.exports = mongoose.model('users', schema);

@@ -4,8 +4,8 @@ module.exports = function () {
   return {
     restrict: 'E',
     template: require('./nav-bar.html'),
-    controller: ['$scope',
-      function ($scope) {
+    controller: ['$scope', 'ProfileFactory', '$state',
+      function ($scope, ProfileFactory, $state) {
         $scope.isCollapsed = true;
         $scope.toggleCollapsed = function () {
           $scope.isCollapsed = !$scope.isCollapsed;
@@ -15,6 +15,17 @@ module.exports = function () {
           if (!$scope.isCollapsed) {
             $scope.isCollapsed = true;
           }
+        };
+
+        $scope.isLoggedIn = function () {
+          var user = ProfileFactory.getUser();
+
+          return !!user.username;
+        };
+
+        $scope.logout = function() {
+          ProfileFactory.setUser({});
+          $state.go('home');
         };
       }
     ]
